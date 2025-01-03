@@ -1,0 +1,82 @@
+// Assign Names to Pins
+const int Speed_Pin_A = A0; // Speed Control Pin for Motor A
+const int Clockwise_Pin_A = A1; // Clockwise Control Button Pin for Motor A
+const int AClockwise_Pin_A = A2; // Anti-Clockwise Control Button Pin for Motor A
+
+const int Speed_Pin_B = A3; // Speed Control Pin for Motor B
+const int Clockwise_Pin_B = A4; // Clockwise Control Button Pin for Motor B
+const int AClockwise_Pin_B = A5; // Anti-Clockwise Control Button Pin for Motor B
+
+// Motor Driver Pins
+const int IN1 = 13; // Motor A
+const int IN2 = 12; // Motor A
+const int ENA = 11; // PWM for Motor A
+const int IN3 = 10; // Motor B
+const int IN4 = 9;  // Motor B
+const int ENB = 8;  // PWM for Motor B
+
+void setup() {
+  // Motor A Pins
+  pinMode(Clockwise_Pin_A, INPUT_PULLUP); 
+  pinMode(AClockwise_Pin_A, INPUT_PULLUP); 
+  pinMode(Speed_Pin_A, INPUT);
+
+  pinMode(IN1, OUTPUT); 
+  pinMode(IN2, OUTPUT); 
+  pinMode(ENA, OUTPUT);
+
+  // Motor B Pins
+  pinMode(Clockwise_Pin_B, INPUT_PULLUP); 
+  pinMode(AClockwise_Pin_B, INPUT_PULLUP); 
+  pinMode(Speed_Pin_B, INPUT);
+
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+  pinMode(ENB, OUTPUT);
+}
+
+void loop() {
+  // Motor A Control
+  int Clockwise_A = digitalRead(Clockwise_Pin_A);
+  int AClockwise_A = digitalRead(AClockwise_Pin_A);
+  int Speed_Value_A = analogRead(Speed_Pin_A);
+
+  int Motor_Speed_A = map(Speed_Value_A, 0, 1023, 0, 255);
+  analogWrite(ENA, Motor_Speed_A);
+
+  if (Clockwise_A == LOW) {
+    // Start Motor A Clockwise
+    digitalWrite(IN1, HIGH);
+    digitalWrite(IN2, LOW);
+  } else if (AClockwise_A == LOW) {
+    // Start Motor A Anti-Clockwise
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, HIGH);
+  } else {
+    // Stop Motor A
+    digitalWrite(IN1, LOW);
+    digitalWrite(IN2, LOW);
+  }
+
+  // Motor B Control
+  int Clockwise_B = digitalRead(Clockwise_Pin_B);
+  int AClockwise_B = digitalRead(AClockwise_Pin_B);
+  int Speed_Value_B = analogRead(Speed_Pin_B);
+
+  int Motor_Speed_B = map(Speed_Value_B, 0, 1023, 0, 255);
+  analogWrite(ENB, Motor_Speed_B);
+
+  if (Clockwise_B == LOW) {
+    // Start Motor B Clockwise
+    digitalWrite(IN3, HIGH);
+    digitalWrite(IN4, LOW);
+  } else if (AClockwise_B == LOW) {
+    // Start Motor B Anti-Clockwise
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, HIGH);
+  } else {
+    // Stop Motor B
+    digitalWrite(IN3, LOW);
+    digitalWrite(IN4, LOW);
+  }
+}
